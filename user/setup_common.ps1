@@ -23,7 +23,7 @@ $config.users[0].user.token=$token
 $config.users[0].user.remove('client-certificate-data')
 $config.users[0].user.remove('client-key-data')
 ConvertTo-Yaml $config > debug.kubeconfig
-$podname=kubectl get pod -l azure/app=spring-petclinic -o 'jsonpath={.items[0].metadata.name}'
+$podname=kubectl get pod -l $appselector -o 'jsonpath={.items[0].metadata.name}'
 
 
 # run on client
