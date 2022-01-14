@@ -4,9 +4,11 @@ $configYaml=kubectl config view --flatten --minify | out-string
 $config = ConvertFrom-Yaml $configYaml -AllDocuments
 $config.contexts[0].context.user='debug-user'
 $config.contexts[0].name=$config.clusters[0].name
-$config."current-context"=$config.clusters[0].name
+$config['current-context']=$config.clusters[0].name
 $config.users[0].name='debug-user'
 $config.users[0].user.token=$token
 $config.users[0].user.remove('client-certificate-data')
 $config.users[0].user.remove('client-key-data')
 ConvertTo-Yaml $config > debug.kubeconfig
+
+kc --kubeconfig .\debug.kubeconfig port-forward spring-petclinic-default-16-fdf8f7b75-znvvm 8787:8787
