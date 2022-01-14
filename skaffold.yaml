@@ -1,0 +1,30 @@
+apiVersion: skaffold/v2beta6
+kind: Config
+metadata:
+  name: spring-petclinic
+build:
+  artifacts:
+  - image: spring-petclinic
+    buildpacks:
+      builder: paketobuildpacks/builder:base
+      dependencies:
+        paths:
+          - src
+          - pom.xml
+  tagPolicy:
+    sha256: {}
+deploy:
+  kubectl:
+    manifests:
+    - kubernetes/deployment.yaml
+    - kubernetes/service.yaml
+portForward:
+  - resourceType: service
+    resourceName: spring-petclinic
+    port: 80
+    localPort: 8080
+profiles:
+  - name: local
+    build:
+      local:
+        push: false
