@@ -1,3 +1,5 @@
+# Used for test purpose, should run on server
+# Need https://github.com/cloudbase/powershell-yaml on windows
 $secret=kubectl get sa debug-user -o 'jsonpath={.secrets[0].name}'  
 $token=kubectl get secret $secret -o 'jsonpath={.data.token}' | base64 -d
 $configYaml=kubectl config view --flatten --minify | out-string
@@ -10,5 +12,8 @@ $config.users[0].user.token=$token
 $config.users[0].user.remove('client-certificate-data')
 $config.users[0].user.remove('client-key-data')
 ConvertTo-Yaml $config > debug.kubeconfig
+$podname=kubectl get pod -l azure/app=spring-petclinic -o 'jsonpath={.items[0].metadata.name}'
 
-kc --kubeconfig .\debug.kubeconfig port-forward spring-petclinic-default-16-fdf8f7b75-znvvm 8787:8787
+
+# run on client
+kubectl --kubeconfig .\debug.kubeconfig port-forward spring-petclinic-default-16-fdf8f7b75-znvvm 8787:8787
