@@ -16,4 +16,4 @@ $podname=kubectl get pod -l azure/app=spring-petclinic -o 'jsonpath={.items[0].m
 
 
 # run on client
-kubectl --kubeconfig .\debug.kubeconfig port-forward spring-petclinic-default-16-fdf8f7b75-znvvm 8787:8787
+kubectl --kubeconfig .\debug.kubeconfig port-forward $podname 8787:8787
