@@ -1,4 +1,6 @@
+# Used for test purpose, should run on server
 # Clean and init
+echo "Run in Server"
 $debuguser='debug-user'
 $debuguserrole='debug-user-role'
 $debuguserrolebinding='debug-user-rolebinding'
@@ -9,7 +11,6 @@ kubectl apply -f role.yaml
 kubectl apply -f service-account.yaml
 kubectl apply -f rolebinding.yaml
 
-# Used for test purpose, should run on server
 # Need https://github.com/cloudbase/powershell-yaml on windows
 $secret=kubectl get sa $debuguser -o 'jsonpath={.secrets[0].name}'  
 $token=kubectl get secret $secret -o 'jsonpath={.data.token}' | base64 -d
@@ -25,6 +26,10 @@ $config.users[0].user.remove('client-key-data')
 ConvertTo-Yaml $config > debug.kubeconfig
 $podname=kubectl get pod -l $appselector -o 'jsonpath={.items[0].metadata.name}'
 
+"download code from https://github.com/showpune/spring-petclinic-k8s-remote-debug for remote debugging"
 
+"open http://"+$serverIp+"/owners/find to start remote debugging"
+
+echo "Run On Client"
 # run on client
 kubectl --kubeconfig .\debug.kubeconfig port-forward $podname 8787:8787
