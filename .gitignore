@@ -3,3 +3,4 @@
 /.mvn
 /.travis.yml
 /.vscode
+/target/
