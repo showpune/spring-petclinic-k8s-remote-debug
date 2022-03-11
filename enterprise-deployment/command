@@ -1,0 +1,6 @@
+az spring-cloud app deployment list --app petclinic --resource-group zhiyongli --service zhiyongli-enterprise
+
+
+az spring-cloud app deployment create --app petclinic --resource-group zhiyongli --service zhiyongli-enterprise --source-path . --name default
+
+az spring-cloud app log tail --name petclinic --resource-group zhiyongli --service zhiyongli-enterprise
